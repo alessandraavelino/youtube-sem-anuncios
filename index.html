@@ -1,0 +1,164 @@
+<html><head><base href="/" /><meta charset="utf-8">
+    <title>YouTube Sem Anúncios</title>
+    <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #1a1a1a;
+      color: #fff;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #2a2a2a;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+    
+    h1 {
+      color: #ff4444;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .input-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #333;
+      color: #fff;
+    }
+    
+    button {
+      padding: 10px 20px;
+      background: #ff4444;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    button:hover {
+      background: #ff6666;
+    }
+    
+    #player {
+      width: 100%;
+      aspect-ratio: 16/9;
+      margin-top: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    
+    .instructions {
+      margin-top: 20px;
+      padding: 15px;
+      background: #333;
+      border-radius: 5px;
+    }
+    
+    .alternative-links {
+      margin-top: 20px;
+    }
+    
+    .alternative-links a {
+      color: #ff4444;
+      text-decoration: none;
+    }
+    
+    .alternative-links a:hover {
+      text-decoration: underline;
+    }
+    </style>
+    </head>
+    <body>
+    <div class="container">
+      <h1>🎥 Video Player Sem Anúncios</h1>
+      
+      <div class="input-group">
+        <input type="text" id="videoUrl" placeholder="Cole o link do YouTube aqui" />
+        <button onclick="loadVideo()">Carregar Vídeo</button>
+      </div>
+      
+      <div id="player"></div>
+      
+      <div class="instructions">
+        <h3>Como usar:</h3>
+        <ol>
+          <li>Cole o URL do vídeo do YouTube no campo acima</li>
+          <li>Clique em "Carregar Vídeo"</li>
+          <li>Assista seu vídeo sem interrupções!</li>
+        </ol>
+      </div>
+      
+      <div class="alternative-links">
+        <h3>Alternativas para assistir sem anúncios:</h3>
+        <ul>
+          <li><a href="https://invidious.io/" target="_blank">Invidious</a> - Alternativa open-source ao YouTube</li>
+          <li><a href="https://piped.video/" target="_blank">Piped</a> - Front-end alternativo para YouTube</li>
+          <li><a href="https://newpipe.net/" target="_blank">NewPipe</a> - App Android sem anúncios</li>
+        </ul>
+      </div>
+    </div>
+    
+    <script>
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    
+    var player;
+    
+    function loadVideo() {
+      const url = document.getElementById('videoUrl').value;
+      const videoId = extractVideoId(url);
+      
+      if (videoId) {
+        if (player) {
+          player.loadVideoById(videoId);
+        } else {
+          createPlayer(videoId);
+        }
+      } else {
+        alert('URL inválida. Por favor, insira um link válido do YouTube.');
+      }
+    }
+    
+    function extractVideoId(url) {
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+      const match = url.match(regExp);
+      return (match && match[2].length === 11) ? match[2] : null;
+    }
+    
+    function createPlayer(videoId) {
+      player = new YT.Player('player', {
+        height: '390',
+        width: '640',
+        videoId: videoId,
+        playerVars: {
+          'playsinline': 1,
+          'controls': 1,
+          'rel': 0, 
+          'showinfo': 0,
+          'modestbranding': 1 
+        }
+      });
+    }
+    
+    function onYouTubeIframeAPIReady() {
+      
+    }
+    </script>
+    </body></html>
